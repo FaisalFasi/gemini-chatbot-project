@@ -1,11 +1,18 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import cors from "cors";
 
+const corsMiddleware = cors({
+  origin: "http://localhost:3000", // Update with your client's origin
+  methods: ["POST"],
+});
 // Access your API key as an environment variable (make sure to configure environment variables)
 const apiKey = process.env.API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 
 // Function to handle POST requests to the /api/chatbot endpoint
 export default async function handler(req, res) {
+  await corsMiddleware(req, res);
+
   if (req.method === "POST") {
     try {
       // Get the generative model (e.g., "gemini-pro")
